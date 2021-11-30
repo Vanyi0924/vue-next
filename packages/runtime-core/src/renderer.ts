@@ -1176,7 +1176,7 @@ function baseCreateRenderer(
           optimized
         )
       } else {
-        mountComponent(
+        mountComponent( // vy: 挂载组件
           n2,
           container,
           anchor,
