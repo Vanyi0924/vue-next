@@ -573,7 +573,7 @@ export function setupComponent(
   isSSR = false
 ) {
   isInSSRComponentSetup = isSSR
-
+  debugger
   const { props, children } = instance.vnode
   const isStateful = isStatefulComponent(instance)
   initProps(instance, props, isStateful, isSSR)
@@ -616,10 +616,10 @@ function setupStatefulComponent(
       )
     }
   }
-  // 0. create render proxy property access cache
+  // 0. create render proxy property access cache vy: 在实例上，创建访问缓存
   instance.accessCache = Object.create(null)
   // 1. create public instance / render proxy
-  // also mark it raw so it's never observed
+  // also mark it raw so it's never observed -> vy: 利用 Object.defineProperty 标记属性 __v_skip 为 true
   instance.proxy = markRaw(new Proxy(instance.ctx, PublicInstanceProxyHandlers))
   if (__DEV__) {
     exposePropsOnRenderContext(instance)
@@ -753,6 +753,7 @@ export function finishComponentSetup(
   // template / render function normalization
   // could be already set when returned from setup()
   if (!instance.render) {
+    // on-the-fly 即时
     // only do on-the-fly compile if not in SSR - SSR on-the-fly compliation
     // is done by server-renderer
     if (!isSSR && compile && !Component.render) {
@@ -761,7 +762,7 @@ export function finishComponentSetup(
           instance.vnode.props &&
           instance.vnode.props['inline-template']) ||
         Component.template
-      if (template) {
+      if (template) { 
         if (__DEV__) {
           startMeasure(instance, `compile`)
         }

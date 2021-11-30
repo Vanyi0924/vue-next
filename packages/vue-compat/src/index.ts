@@ -12,7 +12,7 @@ import {
 } from '../../runtime-core/src/compat/compatConfig'
 
 const compileCache: Record<string, RenderFunction> = Object.create(null)
-
+// vy: 编译函数 vue-compat
 function compileToFunction(
   template: string | HTMLElement,
   options?: CompilerOptions

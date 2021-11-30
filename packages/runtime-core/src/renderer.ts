@@ -1202,6 +1202,7 @@ function baseCreateRenderer(
   ) => {
     // 2.x compat may pre-create the component instance before actually
     // mounting
+    // vy: 如果存在，则取缓存 initialVNode.component
     const compatMountInstance =
       __COMPAT__ && initialVNode.isCompatRoot && initialVNode.component
     const instance: ComponentInternalInstance =

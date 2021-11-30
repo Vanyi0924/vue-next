@@ -12,7 +12,7 @@ if (__DEV__) {
 }
 
 const compileCache: Record<string, RenderFunction> = Object.create(null)
-
+// vy: 编译函数 vue
 function compileToFunction(
   template: string | HTMLElement,
   options?: CompilerOptions
@@ -27,7 +27,7 @@ function compileToFunction(
   }
 
   const key = template
-  const cached = compileCache[key]
+  const cached = compileCache[key] // vy: 优先从缓存里取出
   if (cached) {
     return cached
   }

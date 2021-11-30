@@ -36,7 +36,7 @@ export const DOMDirectiveTransforms: Record<string, DirectiveTransform> = {
   on: transformOn, // override compiler-core
   show: transformShow
 }
-
+// vy: 编译模板
 export function compile(
   template: string,
   options: CompilerOptions = {}
