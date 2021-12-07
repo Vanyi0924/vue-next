@@ -559,7 +559,7 @@ function _createVNode(
       type
     )
   }
-
+  // 创建基础虚拟节点
   return createBaseVNode(
     type,
     props,

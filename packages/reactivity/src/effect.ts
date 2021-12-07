@@ -77,7 +77,7 @@ export class ReactiveEffect<T = any> {
     }
     if (!effectStack.includes(this)) {
       try {
-        effectStack.push((activeEffect = this))
+        effectStack.push((activeEffect = this)) // vy: 追踪依赖
         enableTracking()
 
         trackOpBit = 1 << ++effectTrackDepth

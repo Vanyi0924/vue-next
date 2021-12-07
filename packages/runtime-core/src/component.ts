@@ -573,7 +573,6 @@ export function setupComponent(
   isSSR = false
 ) {
   isInSSRComponentSetup = isSSR
-  debugger
   const { props, children } = instance.vnode
   const isStateful = isStatefulComponent(instance)
   initProps(instance, props, isStateful, isSSR)

@@ -22,12 +22,12 @@ export const patchProp: DOMRendererOptions['patchProp'] = (
   unmountChildren
 ) => {
   if (key === 'class') {
-    patchClass(el, nextValue, isSVG)
+    patchClass(el, nextValue, isSVG) // 设置类名
   } else if (key === 'style') {
-    patchStyle(el, prevValue, nextValue)
-  } else if (isOn(key)) {
+    patchStyle(el, prevValue, nextValue) // 设置样式
+  } else if (isOn(key)) { // on[evt] 如果是原生on事件监听
     // ignore v-model listeners
-    if (!isModelListener(key)) {
+    if (!isModelListener(key)) { // 非 `onUpdate:` 事件监听
       patchEvent(el, key, prevValue, nextValue, parentComponent)
     }
   } else if (

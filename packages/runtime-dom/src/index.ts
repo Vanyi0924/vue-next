@@ -38,7 +38,9 @@ const rendererOptions = extend({ patchProp }, nodeOps)
 let renderer: Renderer<Element | ShadowRoot> | HydrationRenderer
 
 let enabledHydration = false
-
+// vy: 确定渲染器 使用“懒创建”， 参数 rendererOptions 为 {patchProp}， nodeOps 合并的对象
+// patchProp 函数用于处理 class，style，on 等属性
+// nodeOps 节点操作对象，包含 节点的创建、删除、克隆等
 function ensureRenderer() {
   return (
     renderer ||
@@ -62,17 +64,19 @@ export const render = ((...args) => {
 export const hydrate = ((...args) => {
   ensureHydrationRenderer().hydrate(...args)
 }) as RootHydrateFunction
-
+// vy: 初始化创建APP
 export const createApp = ((...args) => {
-  const app = ensureRenderer().createApp(...args)
-
+  const app = ensureRenderer().createApp(...args) //  renderer.ts line: 2355
+  // 拿到 app
   if (__DEV__) {
     injectNativeTagCheck(app)
     injectCompilerOptionsCheck(app)
   }
-
+  // 缓存 mount 方法
   const { mount } = app
+  // 重写 mount 方法
   app.mount = (containerOrSelector: Element | ShadowRoot | string): any => {
+    // 节点元素 Element 
     const container = normalizeContainer(containerOrSelector)
     if (!container) return
 
@@ -80,9 +84,10 @@ export const createApp = ((...args) => {
     if (!isFunction(component) && !component.render && !component.template) {
       // __UNSAFE__
       // Reason: potential execution of JS expressions in in-DOM template.
+      // 在 DOM 模板中可能执行 JS 表达式。
       // The user must make sure the in-DOM template is trusted. If it's
       // rendered by the server, the template should not contain any user data.
-      component.template = container.innerHTML
+      component.template = container.innerHTML 
       // 2.x compat check
       if (__COMPAT__ && __DEV__) {
         for (let i = 0; i < container.attributes.length; i++) {

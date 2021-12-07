@@ -2,7 +2,7 @@ import { ErrorCodes, callWithErrorHandling } from './errorHandling'
 import { isArray, NOOP } from '@vue/shared'
 import { ComponentInternalInstance, getComponentName } from './component'
 import { warn } from './warning'
-
+// 调度器
 export interface SchedulerJob extends Function {
   id?: number
   active?: boolean
@@ -11,10 +11,17 @@ export interface SchedulerJob extends Function {
    * Indicates whether the effect is allowed to recursively trigger itself
    * when managed by the scheduler.
    *
+   * 指示是否该副作用被允许递归触发自己 当被调度器管理时
+   * 
    * By default, a job cannot trigger itself because some built-in method calls,
    * e.g. Array.prototype.push actually performs reads as well (#1740) which
    * can lead to confusing infinite loops.
+   * 默认情况，一个作业无法触发它自身由于某些方法的调用
+   * 例如数组的push方法实际上也会执行读取，这会导致混乱的无限循环
+   * 
    * The allowed cases are component update functions and watch callbacks.
+   * 一种允许的场景是组件更新函数 和 监听回调函数
+   * 
    * Component update functions may update child component props, which in turn
    * trigger flush: "pre" watch callbacks that mutates state that the parent
    * relies on (#1801). Watch callbacks doesn't track its dependencies so if it

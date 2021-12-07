@@ -302,6 +302,7 @@ export const queuePostRenderEffect = __FEATURE_SUSPENSE__
  * })
  * ```
  */
+// 创建渲染函数 HostNode, HostElement
 export function createRenderer<
   HostNode = RendererNode,
   HostElement = RendererElement
@@ -330,7 +331,8 @@ function baseCreateRenderer(
   createHydrationFns: typeof createHydrationFunctions
 ): HydrationRenderer
 
-// implementation
+// implementation 
+// "基础创建渲染器"的实现 化合 | 非化合
 function baseCreateRenderer(
   options: RendererOptions,
   createHydrationFns?: typeof createHydrationFunctions
@@ -339,13 +341,13 @@ function baseCreateRenderer(
   if (__ESM_BUNDLER__ && !__TEST__) {
     initFeatureFlags()
   }
-
+  // 获取全局实例对象 浏览器环境为 window，并在 window 对象上添加 __VUE__ 属性
   const target = getGlobalThis()
   target.__VUE__ = true
   if (__DEV__ || __FEATURE_PROD_DEVTOOLS__) {
     setDevtoolsHook(target.__VUE_DEVTOOLS_GLOBAL_HOOK__, target)
   }
-
+  // 重命名变量
   const {
     insert: hostInsert,
     remove: hostRemove,
@@ -361,9 +363,11 @@ function baseCreateRenderer(
     cloneNode: hostCloneNode,
     insertStaticContent: hostInsertStaticContent
   } = options
-
+ 
   // Note: functions inside this closure should use `const xxx = () => {}`
   // style in order to prevent being inlined by minifiers.
+  // 以下定义了一堆函数
+  // vy: 定义 patch 函数 n1, n2 新旧虚拟节点
   const patch: PatchFn = (
     n1,
     n2,
@@ -1251,7 +1255,6 @@ function baseCreateRenderer(
       }
       return
     }
-
     setupRenderEffect(
       instance,
       initialVNode,
@@ -1319,7 +1322,7 @@ function baseCreateRenderer(
         const { bm, m, parent } = instance
         const isAsyncWrapperVNode = isAsyncWrapper(initialVNode)
 
-        effect.allowRecurse = false
+        effect.allowRecurse = false // 允许递归？
         // beforeMount hook
         if (bm) {
           invokeArrayFns(bm)
@@ -2310,19 +2313,22 @@ function baseCreateRenderer(
     }
     return hostNextSibling((vnode.anchor || vnode.el)!)
   }
-
+  // 将返回render函数
   const render: RootRenderFunction = (vnode, container, isSVG) => {
     if (vnode == null) {
       if (container._vnode) {
         unmount(container._vnode, null, null, true)
       }
     } else {
+      // 此处表明 patch 的 n1,n2 参数为 老|新 节点
+      debugger
       patch(container._vnode || null, vnode, container, null, null, null, isSVG)
     }
+    // 注意这里的 任务调度器 2021-12-7 16:35:04
     flushPostFlushCbs()
     container._vnode = vnode
   }
-
+  // 定义内部内部结构
   const internals: RendererInternals = {
     p: patch,
     um: unmount,
@@ -2335,7 +2341,7 @@ function baseCreateRenderer(
     n: getNextHostNode,
     o: options
   }
-
+  // 化合
   let hydrate: ReturnType<typeof createHydrationFunctions>[0] | undefined
   let hydrateNode: ReturnType<typeof createHydrationFunctions>[1] | undefined
   if (createHydrationFns) {
@@ -2343,11 +2349,11 @@ function baseCreateRenderer(
       internals as RendererInternals<Node, Element>
     )
   }
-
+  // 返回 render 函数, hydrate属性值, createApp
   return {
     render,
     hydrate,
-    createApp: createAppAPI(render, hydrate)
+    createApp: createAppAPI(render, hydrate) // 返回 createApp() 函数
   }
 }
 
