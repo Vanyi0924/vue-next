@@ -1227,7 +1227,8 @@ function baseCreateRenderer(
     }
 
     // inject renderer internals for keepAlive
-    if (isKeepAlive(initialVNode)) {
+    // 为 keepAlive 注入渲染器内部结构
+    if (isKeepAlive(initialVNode)) { //  vnode.type.__isKeepAlive 根据此字段判断 是否 keepAlive
       ;(instance.ctx as KeepAliveContext).renderer = internals
     }
 

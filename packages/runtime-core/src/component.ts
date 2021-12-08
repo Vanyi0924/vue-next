@@ -435,7 +435,7 @@ export interface ComponentInternalInstance {
 const emptyAppContext = createAppContext()
 
 let uid = 0
-
+// 由虚拟节点创建组件实例
 export function createComponentInstance(
   vnode: VNode,
   parent: ComponentInternalInstance | null,
@@ -528,9 +528,9 @@ export function createComponentInstance(
   instance.root = parent ? parent.root : instance
   instance.emit = emit.bind(null, instance)
 
-  // apply custom element special handling
+  // apply custom element special handling 自定义组件
   if (vnode.ce) {
-    vnode.ce(instance)
+    vnode.ce(instance) // 执行自定义组件拦截器
   }
 
   return instance
@@ -584,7 +584,7 @@ export function setupComponent(
   isInSSRComponentSetup = false
   return setupResult
 }
-
+// 安装状态组件
 function setupStatefulComponent(
   instance: ComponentInternalInstance,
   isSSR: boolean
@@ -623,9 +623,9 @@ function setupStatefulComponent(
   if (__DEV__) {
     exposePropsOnRenderContext(instance)
   }
-  // 2. call setup()
+  // 2. call setup() 
   const { setup } = Component
-  if (setup) {
+  if (setup) { // todo
     const setupContext = (instance.setupContext =
       setup.length > 1 ? createSetupContext(instance) : null)
 
