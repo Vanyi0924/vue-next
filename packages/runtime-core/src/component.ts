@@ -624,6 +624,7 @@ function setupStatefulComponent(
     exposePropsOnRenderContext(instance)
   }
   // 2. call setup() 
+  debugger
   const { setup } = Component
   if (setup) { // todo
     const setupContext = (instance.setupContext =
@@ -785,6 +786,7 @@ export function finishComponentSetup(
             extend(finalCompilerOptions.compatConfig, Component.compatConfig)
           }
         }
+        // 给组件配置（ComponentOptions） 添加 render属性并赋值 
         Component.render = compile(template, finalCompilerOptions)
         if (__DEV__) {
           endMeasure(instance, `compile`)

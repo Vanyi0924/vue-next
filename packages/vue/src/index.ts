@@ -12,7 +12,7 @@ if (__DEV__) {
 }
 
 const compileCache: Record<string, RenderFunction> = Object.create(null)
-// vy: 编译函数 vue
+// vy: 编译函数 vue 将模板编译为函数
 function compileToFunction(
   template: string | HTMLElement,
   options?: CompilerOptions
@@ -26,7 +26,7 @@ function compileToFunction(
     }
   }
 
-  const key = template
+  const key = template // 直接将字符串模板作为缓存池的key
   const cached = compileCache[key] // vy: 优先从缓存里取出
   if (cached) {
     return cached
