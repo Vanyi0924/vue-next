@@ -1237,6 +1237,7 @@ function baseCreateRenderer(
       if (__DEV__) {
         startMeasure(instance, `init`)
       }
+      debugger
       setupComponent(instance)
       if (__DEV__) {
         endMeasure(instance, `init`)

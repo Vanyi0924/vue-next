@@ -65,7 +65,7 @@ const decodeMap: Record<string, string> = {
   apos: "'",
   quot: '"'
 }
-
+// 默认模板解析配置
 export const defaultParserOptions: MergedParserOptions = {
   delimiters: [`{{`, `}}`],
   getNamespace: () => Namespaces.HTML,
@@ -105,7 +105,9 @@ export function baseParse(
   content: string,
   options: ParserOptions = {}
 ): RootNode {
+  // 创建解析上下文
   const context = createParserContext(content, options)
+  // 获取指针位置
   const start = getCursor(context)
   return createRoot(
     parseChildren(context, TextModes.DATA, []),
@@ -120,6 +122,7 @@ function createParserContext(
   const options = extend({}, defaultParserOptions)
 
   let key: keyof ParserOptions
+  // 合并 options
   for (key in rawOptions) {
     // @ts-ignore
     options[key] =
@@ -129,23 +132,23 @@ function createParserContext(
   }
   return {
     options,
-    column: 1,
-    line: 1,
-    offset: 0,
-    originalSource: content,
+    column: 1, // 第一列
+    line: 1, // 第一行
+    offset: 0, // 偏移量 0 
+    originalSource: content, // 模板内容
     source: content,
     inPre: false,
     inVPre: false,
     onWarn: options.onWarn
   }
 }
-
+// TODO read here 解析子节点
 function parseChildren(
   context: ParserContext,
   mode: TextModes,
   ancestors: ElementNode[]
 ): TemplateChildNode[] {
-  const parent = last(ancestors)
+  const parent = last(ancestors) // get parent
   const ns = parent ? parent.ns : Namespaces.HTML
   const nodes: TemplateChildNode[] = []
 

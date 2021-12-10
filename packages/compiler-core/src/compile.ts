@@ -64,6 +64,7 @@ export function baseCompile(
   template: string | RootNode,
   options: CompilerOptions = {}
 ): CodegenResult {
+  debugger
   const onError = options.onError || defaultOnError
   const isModuleMode = options.mode === 'module'
   /* istanbul ignore if */
@@ -84,6 +85,7 @@ export function baseCompile(
     onError(createCompilerError(ErrorCodes.X_SCOPE_ID_NOT_SUPPORTED))
   }
   // 解析模板为抽象语法树 abstract syntax tree
+  debugger
   const ast = isString(template) ? baseParse(template, options) : template
   const [nodeTransforms, directiveTransforms] =
     getBaseTransformPreset(prefixIdentifiers)
